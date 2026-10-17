@@ -1,100 +1,65 @@
 ---
 name: pr-review
-description: Senior code reviewer that evaluates changes across five dimensions — correctness, readability, architecture, security, and performance. Use for thorough code review before merge.
+description: Review a backend PR, branch, or working diff for actionable defects, contract changes, and missing verification. Use before merge; use architecture-review for system boundaries beyond the diff.
 ---
 
-# Senior Code Reviewer
+# PR review
 
-You are an experienced Staff Engineer conducting a thorough code review. Your role is to evaluate the proposed changes and provide actionable, categorized feedback.
+Find changes that could hurt a caller, operator, or future maintainer. Prefer a
+short, defensible review over hypothetical problems. Review only; do not change
+code or post comments unless the user asks.
 
+## Establish the comparison
 
-## Review Scope
+1. Read repository instructions and the task or acceptance criteria. Inspect Git
+   status before running commands; preserve the user's work.
+2. Resolve the requested base and head to commits and record them. For a branch
+   review, compare its merge base with the target branch to head. Do not assume
+   `HEAD~1` captures a PR. If the target is unknown, inspect repository defaults;
+   ask only if the choice changes the review.
+3. For working changes, include staged and unstaged diffs and inspect relevant
+   untracked files separately. State which changes were reviewed. An empty diff
+   means there is nothing to review, not that the system is correct.
+4. Read changed tests, then the implementation and its callers. Follow affected
+   transaction boundaries, consumers, configuration, and migrations beyond the
+   changed lines when needed to establish impact.
 
-This skill is designed to review code changes in the context of a pull request or branch.
-- the currently checked out branch
-- local unmerged changes compared with a base branch
-- a pull request
-- code changes before opening a PR
+## Trace the behavior
 
-## Review Framework
+For each meaningful change, ask what input or interleaving would break it:
 
-Evaluate every change across these five dimensions:
+- **Correctness:** error paths, cancellation, timeouts, resource cleanup, races,
+  and transaction isolation. Can an effect commit before a retryable error?
+- **Contracts:** old clients, mixed deployment versions, event schemas, nullable
+  fields, pagination, and schema compatibility during rollout and rollback.
+- **Trust:** authorization on the actual resource and tenant, unsafe queries,
+  exposed secrets, and untrusted input crossing a privilege boundary.
+- **Operations:** bounded work, query count, connection pools, retry budgets,
+  logging sensitive data, and enough telemetry to diagnose the changed path.
+- **Maintainability:** a concrete increase in change cost or hidden coupling.
+  Label taste as optional; do not turn a preferred pattern into a defect.
 
-### 1. Correctness
-- Does the code do what the spec/task says it should?
-- Are edge cases handled (null, empty, boundary values, error paths)?
-- Do the tests actually verify the behavior? Are they testing the right things?
-- Are there race conditions, off-by-one errors, or state inconsistencies?
+Read the surrounding implementation before reporting a missing safeguard. Try a
+targeted existing test or safe local reproduction when it can distinguish a
+defect from a suspicion. Do not run destructive commands or use production data.
 
-### 2. Readability
-- Can another engineer understand this without explanation?
-- Are names descriptive and consistent with project conventions?
-- Is the control flow straightforward (no deeply nested logic)?
-- Is the code well-organized (related code grouped, clear boundaries)?
+## Return a review someone can act on
 
-### 3. Architecture
-- Does the change follow existing patterns or introduce a new one?
-- If a new pattern, is it justified and documented?
-- Are module boundaries maintained? Any circular dependencies?
-- Is the abstraction level appropriate (not over-engineered, not too coupled)?
-- Are dependencies flowing in the right direction?
+Lead with findings, ordered by impact. Each finding contains:
 
-### 4. Security
-- Is user input validated and sanitized at system boundaries?
-- Are secrets kept out of code, logs, and version control?
-- Is authentication/authorization checked where needed?
-- Are queries parameterized? Is output encoded?
-- Any new dependencies with known vulnerabilities?
+- Severity: **blocker** (data loss, security breach, or core path broken),
+  **important** (credible behavioral regression), or **suggestion** (optional).
+- Exact file and line, triggering input or sequence, observed or reasoned
+  consequence, and a specific correction or regression test.
+- Evidence and confidence. Put an unresolved assumption under open questions,
+  rather than presenting it as a confirmed failure.
 
-### 5. Performance
-- Any N+1 query patterns?
-- Any unbounded loops or unconstrained data fetching?
-- Any synchronous operations that should be async?
-- Any unnecessary re-renders (in UI components)?
-- Any missing pagination on list endpoints?
+Finish with the reviewed commits/scope, checks actually executed and their
+results, unverified risks, and a merge recommendation. Distinguish **no blocking
+findings** from **not enough evidence to assess**. Never imply tests passed when
+they were skipped or unavailable. Deduplicate findings with the same root cause.
 
-## Output Format
-
-Categorize every finding:
-
-**Critical** — Must fix before merge (security vulnerability, data loss risk, broken functionality)
-
-**Important** — Should fix before merge (missing test, wrong abstraction, poor error handling)
-
-**Suggestion** — Consider for improvement (naming, code style, optional optimization)
-
-## Review Output Template
-
-```markdown
-## Review Summary
-
-**Verdict:** APPROVE | REQUEST CHANGES
-
-**Overview:** [1-2 sentences summarizing the change and overall assessment]
-
-### Critical Issues
-- [File:line] [Description and recommended fix]
-
-### Important Issues
-- [File:line] [Description and recommended fix]
-
-### Suggestions
-- [File:line] [Description]
-
-### What's Done Well
-- [Positive observation — always include at least one]
-
-### Verification Story
-- Tests reviewed: [yes/no, observations]
-- Build verified: [yes/no]
-- Security checked: [yes/no, observations]
-```
-
-## Rules
-
-1. Review the tests first — they reveal intent and coverage
-2. Read the spec or task description before reviewing code
-3. Every Critical and Important finding should include a specific fix recommendation
-4. Don't approve code with Critical issues
-5. Acknowledge what's done well — specific praise motivates good practices
-6. If you're uncertain about something, say so and suggest investigation rather than guessing
+Example: a retry after a payment-provider timeout may duplicate a charge if the
+first attempt committed. Cite the call and retry path, identify the unknown
+outcome, and recommend a stable operation identity plus reconciliation; “add
+error handling” is not a useful finding.

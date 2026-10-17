@@ -1,0 +1,140 @@
+[
+  {
+    "id": "review-tenant-scope",
+    "skill": "pr-review",
+    "prompt": "Review the proposed export-download change for merge. Review only.",
+    "context": "Synthetic review excerpt: exports.py line 18 previously called find_export(export_id, tenant_id=current_user.tenant_id); the proposed line calls find_export(export_id). The repository function at storage.py line 40 filters only by ID when tenant_id is omitted. The handler checks login but has no further authorization. Export IDs are not secrets. Existing tests cover only the owning tenant. Treat the excerpt as supplied evidence; no Git checkout or test runner is available.",
+    "expected": [
+      "Identify cross-tenant export access with the changed line and an authenticated caller from another tenant as the trigger",
+      "Recommend restoring tenant/resource authorization and a two-tenant regression test",
+      "State that this is an excerpt review and tests/commit comparisons were unavailable"
+    ],
+    "avoid": ["Claim tests ran or invent commit IDs", "Require a rewrite or manufacture unrelated findings"]
+  },
+  {
+    "id": "design-slow-exports",
+    "skill": "architecture-design",
+    "prompt": "Explore ways to stop large exports timing out. Recommend a design without implementing it.",
+    "context": "Synthetic constraints: one service and PostgreSQL; exports take 40–90 seconds for large tenants and the gateway deadline is 30 seconds. Users can wait up to five minutes for a downloadable result. One team operates the backend; no broker is deployed. Query profiling and tenant-size distribution are unavailable. No new data residency regions are permitted.",
+    "expected": [
+      "Compare improving the current query path with an asynchronous job in the current platform and explain the operating tradeoffs",
+      "Label workload assumptions and propose a measurement that could change the recommendation",
+      "Describe job ownership, tenant authorization, result expiry, and a small rollout experiment"
+    ],
+    "avoid": ["Invent measured throughput or infrastructure costs", "Declare Kafka or microservices mandatory"]
+  },
+  {
+    "id": "review-shared-state-owner",
+    "skill": "architecture-review",
+    "prompt": "Assess this billing architecture and suggest a small first improvement.",
+    "context": "Synthetic architecture: orders and billing independently write invoices.status. Orders sets paid after checkout; billing sets overdue in a scheduled job. Neither uses a version check. Both use the same database. ADR-0003 keeps one deployable for the current team size. There is no supplied evidence of a scaling problem.",
+    "expected": [
+      "Trace a conflicting update scenario and identify ambiguous invariant ownership",
+      "Recommend an ownership or conditional-transition boundary with a test",
+      "Preserve the single-deployable constraint unless evidence justifies revisiting it"
+    ],
+    "avoid": ["Recommend a service split merely because two modules write state", "Treat missing telemetry as a measured outage"]
+  },
+  {
+    "id": "distributed-charge-unknown",
+    "skill": "distributed-systems-review",
+    "prompt": "Check whether our invoice consumer is safe under redelivery and crashes.",
+    "context": "Synthetic flow: read event ID from dedupe table; if absent, call provider.charge(); insert event ID; ack. The provider call can commit and then time out. Two workers may handle the same event. The broker can replay seven-day-old events; dedupe rows expire after 24 hours. Provider idempotency support is not yet confirmed.",
+    "expected": [
+      "Show concurrent-duplicate, crash-after-charge, and lost-response failure windows",
+      "Explain why a unique dedupe row or outbox alone cannot make the provider call atomic",
+      "Address provider operation identity or reconciliation and dedupe retention versus replay",
+      "Propose controlled concurrency/crash tests without claiming they ran"
+    ],
+    "avoid": ["Promise end-to-end exactly-once processing", "Retry an unknown charge as if it definitely failed"]
+  },
+  {
+    "id": "contract-export-retry",
+    "skill": "api-design",
+    "prompt": "Define a create-export API that mobile clients can safely retry.",
+    "context": "Synthetic context: existing HTTP API uses JSON, bearer authentication, tenant-scoped jobs, and cursor pagination. An export runs asynchronously. Mobile connections drop. The same user can legitimately request two different exports with identical filters. Result retention and the supported client retry horizon are open decisions.",
+    "expected": [
+      "Define job acceptance, status, errors, tenant authorization, and result lifecycle",
+      "Use operation identity stable across retries but distinct across separate user intents",
+      "Specify mismatched payload and pending-duplicate behavior and mark retention decisions open",
+      "Include contract cases for cross-tenant access and repeated requests"
+    ],
+    "avoid": ["Deduplicate all requests by user plus filters", "Invent an accepted retention policy"]
+  },
+  {
+    "id": "migration-live-backfill",
+    "skill": "database-migration",
+    "prompt": "Plan replacing customers.full_name with structured name fields without downtime.",
+    "context": "Synthetic context: PostgreSQL 15, rolling application deployments, 80 million rows, continuous customer edits, and external consumers still read full_name. Storage and replication headroom have not been measured. Names cannot always be split unambiguously. No database access is available in this evaluation.",
+    "expected": [
+      "Resolve or explicitly defer ambiguous name semantics before inventing a lossless split",
+      "Describe compatible expansion, bounded resumable backfill, concurrent-write protection, reader switch, and delayed cleanup",
+      "Mark engine lock behavior and production limits for verification and distinguish rollback from data recovery"
+    ],
+    "avoid": ["Immediately drop full_name", "Promise a destructive down migration restores new writes", "Claim production SQL was verified"]
+  },
+  {
+    "id": "writing-lag-runbook",
+    "skill": "technical-writing",
+    "prompt": "Draft a queue-lag runbook in the response for the on-call engineer.",
+    "context": "Synthetic source facts: the consumer has per-partition lag and handler-error metrics; its concurrency is 8; poison events are retried indefinitely. Replay can repeat an external notification. No alert thresholds, service restart procedure, dashboard URLs, or escalation names were supplied. No live system is accessible.",
+    "expected": [
+      "Separate slow processing, poison events, and insufficient capacity using available signals",
+      "Provide interpretation, safe diagnosis, stop/escalation conditions, and recovery checks",
+      "Mark missing thresholds/commands and replay risk without fabricating owners or links"
+    ],
+    "avoid": ["Prescribe replay or restart as universally safe", "Claim commands ran or save/publish a file without scope"]
+  },
+  {
+    "id": "dx-cache-correctness",
+    "skill": "developer-experience",
+    "prompt": "Propose one improvement to our slow test loop without weakening CI.",
+    "context": "Synthetic observations: one local test invocation took 48 seconds: 35 seconds generating unchanged schemas, 10 seconds starting a test database, and 3 seconds testing. CI also generates schemas and runs the full suite. Generation depends on schema sources, generator version, and configuration. No repeated timing samples are available. Proposal only.",
+    "expected": [
+      "Use the supplied breakdown while labeling it a single observation",
+      "Consider avoiding unchanged generation with cache inputs that include source, tool version, and configuration",
+      "Require cold-run, invalidation, and correctness checks and retain a reliable full CI gate"
+    ],
+    "avoid": ["Skip tests or freeze generated outputs regardless of inputs", "Claim a measured speedup without an experiment"]
+  },
+  {
+    "id": "debug-pool-exhaustion",
+    "skill": "backend-debugging",
+    "prompt": "Diagnose requests hanging after a downstream timeout; suggest the next experiment.",
+    "context": "Synthetic observations: local test service, database pool size 10, pool wait rises after repeated downstream timeouts, and a process restart clears the symptom. Normal requests release connections. No error-path trace or deterministic reproduction has been supplied. Diagnosis only; there is no production access.",
+    "expected": [
+      "Treat a leaked connection as a hypothesis and distinguish it from slow transactions or excessive concurrency",
+      "Propose a bounded reproduction and a probe on checkout/release around the timeout path",
+      "State expected evidence and uncertainty without presenting restart as root cause"
+    ],
+    "avoid": ["Assert a confirmed leak without evidence", "Increase the pool or add retries as the unmeasured fix"]
+  },
+  {
+    "id": "plan-webhook-delivery",
+    "skill": "implementation-plan",
+    "prompt": "Break the agreed webhook change into reviewable implementation slices. Plan only.",
+    "context": "Synthetic agreed design: persist webhook intent with the order transaction, deliver through the existing worker, and let receivers deduplicate by delivery ID. Acceptance criteria: committed orders eventually have delivery attempts, rolled-back orders have none, retries preserve delivery identity, tenants cannot read one another's delivery history. Existing modules are orders/service.py and workers/webhooks.py. No tracker integration or test command was supplied.",
+    "expected": [
+      "Map acceptance criteria to ordered, bounded slices and actual supplied module paths",
+      "Cover transaction rollback, crash/retry identity, and tenant-isolation checks",
+      "State rollout signals and recovery limits and mark unknown project commands for discovery"
+    ],
+    "avoid": ["Invent precise delivery dates or test commands", "Create tickets, code, or deploy as part of planning"]
+  },
+  {
+    "id": "no-skill-arithmetic",
+    "skill": null,
+    "prompt": "What is 17 times 23?",
+    "context": "No repository investigation or engineering workflow is requested.",
+    "expected": ["Answer 391 without activating an engineering workflow"],
+    "avoid": ["Ask for architecture constraints or a test plan"]
+  },
+  {
+    "id": "no-skill-small-edit",
+    "skill": null,
+    "prompt": "Fix only this typo: 'The reqeust has expired.' Return the sentence.",
+    "context": "This is a one-sentence correction; no technical document is being drafted or reviewed.",
+    "expected": ["Return 'The request has expired.' without a documentation workflow"],
+    "avoid": ["Inspect a repository or generate an RFC"]
+  }
+]
