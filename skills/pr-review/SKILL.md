@@ -1,6 +1,6 @@
 ---
 name: pr-review
-description: Review a backend PR, branch, or working diff for actionable defects, contract changes, and missing verification. Use before merge; use architecture-review for system boundaries beyond the diff.
+description: Review a PR, branch, or working diff for requirement gaps, actionable defects, compatibility changes, and missing verification. Use for code review before merge across applications, libraries, tooling, and services.
 ---
 
 # PR review
@@ -26,6 +26,11 @@ code or post comments unless the user asks.
 
 ## Trace the behavior
 
+Check requirements and implementation quality separately. A well-structured
+change can implement the wrong behavior. Map acceptance criteria to changed
+behavior; if no specification is available, state that limit and review what can
+be established from the diff and its callers.
+
 For each meaningful change, ask what input or interleaving would break it:
 
 - **Correctness:** error paths, cancellation, timeouts, resource cleanup, races,
@@ -38,6 +43,11 @@ For each meaningful change, ask what input or interleaving would break it:
   logging sensitive data, and enough telemetry to diagnose the changed path.
 - **Maintainability:** a concrete increase in change cost or hidden coupling.
   Label taste as optional; do not turn a preferred pattern into a defect.
+
+Adapt the review to the surface: UI state transitions, keyboard access, focus,
+and stale async responses; library exports and supported runtimes; CLI exit codes,
+stdout/stderr and filesystem effects; build tooling and artifact provenance.
+Select relevant checks instead of applying service-specific checks to every diff.
 
 Read the surrounding implementation before reporting a missing safeguard. Try a
 targeted existing test or safe local reproduction when it can distinguish a

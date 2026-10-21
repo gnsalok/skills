@@ -49,6 +49,7 @@ From the repository root, with Python 3.10+:
 ```bash
 python3 scripts/validate.py
 python3 -m unittest discover -s tests -v
+python3 -m unittest discover -s evals/fixtures/report-cli/tests -v
 ```
 
 The validator checks skill metadata, size, self-contained resource links, local
@@ -74,3 +75,21 @@ mappings against official host documentation before changing installation logic.
 Do not import upstream skill packs as a substitute for a focused workflow. If
 adapting any source material, include the source, revision, license, and required
 notices. Keep attribution separate from a claim of behavioral verification.
+
+## Review the collection as it grows
+
+Start with the requested artifact, not a new topic keyword. Check the catalog for
+an existing workflow before adding one. A distinct trigger, decision sequence,
+and result justify a new skill; extra background reading can be a packaged reference.
+Keep the six lifecycle entry points useful on their own and preserve existing names.
+
+For broad skills, include at least one non-service scenario (UI, library, CLI, or
+tooling). When adding a release or external-action workflow, include a readiness-only
+case and a missing-evidence case. Test that unrelated prompts do not activate a
+large workflow. When skills overlap, state the boundary in their descriptions and
+in the workflow guide rather than adding circular instructions to call each other.
+
+After a host/model upgrade or repeated failure, use `workflow-retrospective` to
+classify the issue before editing prompts. Record source revision/date for new
+external inspiration in the comparative review; keep imported material's license
+when directly adapting it. Update the changelog for new skills or behavior changes.

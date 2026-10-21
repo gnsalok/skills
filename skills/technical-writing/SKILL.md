@@ -1,6 +1,6 @@
 ---
 name: technical-writing
-description: Write or revise backend RFCs, ADRs, runbooks, READMEs, and onboarding documentation from repository evidence. Use when a decision, operational procedure, or development workflow needs a durable explanation.
+description: Write or revise technical RFCs, ADRs, runbooks, READMEs, tutorials, and onboarding guides from evidence. Use for a durable document or substantive documentation edit, not a one-line copy correction.
 ---
 
 # Technical writing
@@ -35,6 +35,9 @@ Never invent benchmarks, incident history, owners, approvals, or test results.
 - **README/onboarding:** purpose, prerequisites and versions, working directory,
   setup, one useful invocation, expected result, common failures, and maintenance
   pointers. Keep secrets in secure configuration; show placeholder names only.
+- **Tutorial/how-to:** a reader goal, prior knowledge, a minimal runnable example,
+  expected intermediate results, common mistakes, and a way to verify completion.
+  Keep API reference facts separate from the teaching sequence.
 
 Use these as content checks, not mandatory headings. Omit sections that do not
 help the reader. Prefer a concrete example over an abstract paragraph.

@@ -7,14 +7,17 @@ project, point their instructions at one canonical project guide and confirm
 each host can read it; file-import syntax is host-specific.
 
 ```text
-Domain: [what this backend does; link to the glossary]
-Boundaries: [state owners and service/module entry points]
+Domain: [what this application, library, or tool does; link to the glossary]
+Boundaries: [state owners and component/module entry points]
 Local setup: [documented commands, working directories, pinned runtimes]
 Tests: [one-test command, relevant integration tests, full CI gate]
 Contracts: [schema locations, consumers, compatibility policy]
 Decisions: [ADR/RFC directory and naming/status convention]
 Runtime: [databases/brokers and versions; local substitutes and their limits]
 Operations: [SLO/runbook locations, data handling and production-access rules]
+Delivery: [deployment or package process, artifact identity, release authority]
+UI/platform: [design system, accessibility goals, supported runtimes/devices]
+Workflow: [spec/task location, active scope, stage entry points you use]
 Writing: [audience, document location, preferred terminology]
 ```
 

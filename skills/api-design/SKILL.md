@@ -1,6 +1,6 @@
 ---
 name: api-design
-description: Design or evolve HTTP, RPC, or event contracts for backend consumers, including errors, authorization, retries, and compatibility. Use for a new endpoint or contract change before implementation.
+description: Design or evolve public interfaces for libraries, CLIs, HTTP, RPC, or events, including errors and compatibility. Use when defining caller-visible behavior before implementation.
 ---
 
 # API design
@@ -18,6 +18,9 @@ Ask only for missing requirements that change the contract. State assumed volume
 latency, ordering, and compatibility constraints explicitly.
 
 ## Specify the observable behavior
+
+Select checks appropriate to the actual interface; transport-specific conventions
+belong to that transport, not every public function or command.
 
 - Inputs, types, units, required/optional/nullable distinctions, validation, and
   limits. Define unknown-field and enum-extension behavior for real consumers.
@@ -54,6 +57,12 @@ compatibility cases. Clearly label examples that have not been schema-validated.
 Finish with unresolved decisions and contract tests needed at provider and
 consumer boundaries. If implementation is in scope, run the project's contract
 validation and relevant tests and report the actual results.
+
+For a library, specify public exports, types, supported runtimes, resource
+ownership, cancellation, and error semantics; test from a consumer package.
+For a CLI, specify flags, defaults, exit codes, stdout versus stderr, machine
+output, and file overwrite behavior. Treat documented output used by scripts as
+a compatibility contract. Avoid imposing HTTP conventions on local interfaces.
 
 Example: “create export” should explain whether a retry returns the same job,
 what another tenant can see, and when a result expires, not just its POST path.

@@ -1,6 +1,6 @@
 ---
 name: architecture-design
-description: Explore a backend architecture idea and compare viable designs against workload, invariants, team constraints, and operating cost. Use before implementation; produces a recommendation or a bounded experiment.
+description: Compare architecture options for applications, libraries, tools, or services against user needs, invariants, workload, and change cost. Use when the technical approach or module boundaries are undecided.
 ---
 
 # Architecture design
@@ -12,8 +12,13 @@ it or provisioning infrastructure requires that scope from the user.
 ## Establish the problem
 
 Read local instructions, existing design records, relevant code, and deployment
-configuration. Follow one representative request or event through storage and
-downstream effects. Cite the evidence for the current behavior.
+configuration. Follow one representative request, interaction, or library/CLI
+call through state changes and effects. Cite evidence for the current behavior.
+
+Choose the right scale: a component state model, package interface, build tool,
+or distributed service. Include runtime, browser/platform, offline, accessibility,
+and distribution constraints where relevant. A local library needs no invented
+deployment topology. Read existing domain terms and clarify overloaded concepts.
 
 Write a compact design brief:
 
@@ -47,6 +52,12 @@ For each remaining option describe:
 Choose technology only after these differences are clear. Do not prescribe
 microservices, a broker, caching, or multi-region deployment without a workload
 or failure requirement that pays for the complexity.
+
+Compare interface designs as well as technologies. Work through two concrete
+caller examples: what must callers know, which invariants can the module own,
+and where will a future change spread? Use a small disposable prototype to answer
+one uncertain interaction or state question when authorized; label its limits
+and record the finding without treating prototype code as production-ready.
 
 ## Deliver the decision
 

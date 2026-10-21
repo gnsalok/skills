@@ -78,7 +78,7 @@ def validate_collection(root):
             errors.append(f"{directory}: skill directory must not be a symlink")
         else:
             errors.extend(validate_skill(directory / "SKILL.md"))
-    markdown = [root / "README.md", root / "CONTRIBUTING.md"]
+    markdown = sorted({root / "README.md", root / "CONTRIBUTING.md", *root.glob("*.md")})
     for directory in (skills_dir, root / "docs", root / "evals"):
         markdown.extend(directory.rglob("*.md"))
     for path in markdown:

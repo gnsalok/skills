@@ -1,6 +1,6 @@
 ---
 name: implementation-plan
-description: Turn an agreed backend change into small, dependency-ordered implementation slices with acceptance tests, rollout gates, and recovery steps. Use after the goal is clear and before coding a multi-step change.
+description: Turn an agreed software change or spec into dependency-ordered implementation slices with acceptance checks and delivery gates. Use after scope is defined and before coding multi-step work.
 ---
 
 # Implementation plan
@@ -28,6 +28,9 @@ Keep pure refactors separate when that makes behavior changes easier to assess.
 
 For each slice provide:
 
+- A stable task ID, criterion IDs it satisfies, dependencies, and status. Keep
+  one canonical task list and reference existing specs or tickets rather than
+  duplicating their requirements. Preserve unfinished plans for other work.
 - Outcome and affected modules/paths discovered in the repository.
 - Dependencies and prerequisites, including credentials or external decisions.
 - Implementation steps with enough detail to locate the seam, without inventing
@@ -48,6 +51,11 @@ Walk the mixed-version rollout and data lifecycle. Put compatible schema changes
 before new writers, and cleanup after consumers and rollback windows have moved.
 Include observability required to decide whether to continue rollout.
 
+Adapt delivery to the product: browser interaction and accessibility checks for
+UI work, consumer/runtime compatibility for libraries, and output/installation
+checks for CLIs. Deployment gates apply only to deployable changes. A simple
+local fix can have a two-step plan without a separate PRD or release ceremony.
+
 Trace every acceptance criterion to at least one slice and check for work that
 serves no criterion. Keep optional enhancements out of the required path. Use
 coarse effort/risk estimates only if helpful; do not invent precise delivery dates.
@@ -57,6 +65,10 @@ coarse effort/risk estimates only if helpful; do not invent precise delivery dat
 Return the scope, ordered slices, dependency map if needed, verification plan,
 and remaining decisions. End with the first executable step. If saving a plan is
 requested, follow local conventions and include the relevant code/design refs.
+
+Name the active spec or scope explicitly so a later session cannot resume the
+wrong initiative. Completed tasks link to their evidence; blocked tasks name the
+missing input. A resumed session should recheck state before trusting old marks.
 
 State that proposed checks have not run. A plan is complete when an engineer can
 start a bounded slice and know how to tell it works, not when every possible

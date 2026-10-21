@@ -1,6 +1,6 @@
 ---
 name: developer-experience
-description: Investigate slow or unreliable backend development loops such as setup, local services, tests, CI, and agent context. Use to propose or implement measured, incremental DX improvements without weakening correctness checks.
+description: Improve slow or unreliable setup, builds, tests, local previews, and developer tooling using measured feedback loops. Use for development workflow friction; use agent-context for instruction and context layout.
 ---
 
 # Developer experience
@@ -16,7 +16,7 @@ definitions, and CI. Follow the documented path from a clean checkout when an
 isolated environment is available. Preserve existing files and user services.
 
 Choose a concrete loop: first setup, one test, full suite, code generation,
-debugging a request, or getting an agent to locate the right code. Record the
+debugging a UI, request, or command, or getting an agent to locate the right code. Record the
 command, environment/tool versions, elapsed time, success rate, and manual steps.
 Label a single observation; do not present it as a stable benchmark.
 
@@ -34,6 +34,11 @@ Possible fixes include deterministic fixtures, isolated test databases, health
 checks for local services, incremental test selection with a reliable full CI
 gate, cache keys that include true inputs, and concise navigation instructions.
 Use the smallest change that addresses the measured bottleneck.
+
+For frontend/package tooling, inspect file-watcher scope, hot reload, bundling,
+type/code generation, and platform assumptions. Compare the same developer action
+before and after a change; a faster clean build may not improve the edit-preview
+loop the user actually spends time in.
 
 Do not hide failures, remove security checks, disable tests to get green CI,
 cache secret-bearing outputs, or rely on a warm cache as proof setup works.

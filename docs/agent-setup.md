@@ -90,6 +90,19 @@ steering files hold durable project context; leave task methods in the skills.
 Official references: [Kiro skills](https://kiro.dev/docs/skills/) and
 [CLI skill resources](https://kiro.dev/docs/cli/custom-agents/configuration-reference/#skill-resources).
 
+## Lifecycle names and existing installations
+
+Use `spec`, `implementation-plan`, `build`, `test`, `pr-review`, and `ship` for the
+six stages. This collection does not install `/plan` or `/review` aliases; a host
+may reserve those for built-in functions. In Claude Code, use the actual skill
+name such as `/implementation-plan`; in Codex use its skill selector or explicit
+mention; in Kiro request the skill by name. If a command collides, use the selector
+or explicit-file workflow and verify which skill was loaded.
+
+The original ten names remain valid. Add new skills individually or compare and
+back up existing installed folders before an upgrade. `--all` will refuse a mixed
+set containing an existing destination, before copying any selected skill.
+
 ## Verify activation, then evaluate behavior
 
 1. Check that the installed file exists at the native path and restart the session.
