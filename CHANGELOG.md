@@ -2,13 +2,13 @@
 
 ## Unreleased — engineering lifecycle expansion
 
-- Expand the collection from 10 to 26 standalone skills for general software
+- Expand the collection from 10 to 27 standalone skills for general software
   engineering, preserving the existing backend specialties and all skill names.
 - Add `spec`, `build`, `test`, and `ship` to complete the lifecycle with
   `implementation-plan` and `pr-review`.
 - Add idea refinement, research, frontend design, browser verification, security
   review, performance investigation, refactoring, CI/CD, observability, agent
-  context, session handoff, and workflow retrospective.
+  context, skill review, session handoff, and workflow retrospective.
 - Broaden review, architecture, API design, planning, writing, and DX guidance
   for application, library, CLI, and tooling work.
 - Add stage handoffs, packaged templates, and

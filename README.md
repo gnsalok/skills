@@ -85,6 +85,7 @@ hidden prerequisite. The six lifecycle skills above form a useful starting set.
 | Skill | When to use it | Concrete result |
 | --- | --- | --- |
 | [agent-context](skills/agent-context/SKILL.md) | Agents repeatedly miss project facts or conventions | Focused instructions and reliable navigation pointers |
+| [skill-reviewer](skills/skill-reviewer/SKILL.md) | An existing agent skill or proposed skill change needs assessment | Evidence-backed findings on routing, instructions, resources, scope, and evaluations |
 | [session-handoff](skills/session-handoff/SKILL.md) | Pause or transfer a long task | Current state, decisions, evidence, concrete next action |
 | [workflow-retrospective](skills/workflow-retrospective/SKILL.md) | Learn from a session or tool/model change | Prioritized improvements and regression cases |
 
