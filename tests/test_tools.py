@@ -71,6 +71,10 @@ class ToolTests(unittest.TestCase):
 
     def test_installs_complete_folders_for_all_hosts(self):
         (self.path.parent / "reference.txt").write_text("resource")
+        references = self.path.parent / "references"
+        references.mkdir()
+        (references / "outline.md").write_text("# Packaged outline\n")
+        self.path.write_text(self.path.read_text() + "\n[Outline](references/outline.md)\n")
         for agent, directory in AGENTS.items():
             with self.subTest(agent=agent):
                 targets = install(self.source, self.project, agent, ["demo"])
@@ -78,6 +82,8 @@ class ToolTests(unittest.TestCase):
                 self.assertEqual(targets, [target])
                 self.assertEqual((target / "SKILL.md").read_bytes(), self.path.read_bytes())
                 self.assertEqual((target / "reference.txt").read_text(), "resource")
+                self.assertEqual((target / "references/outline.md").read_text(), "# Packaged outline\n")
+                self.assertEqual(validate_links(target / "SKILL.md", target), [])
                 self.assertFalse(target.is_symlink())
 
     def test_repeat_install_preserves_personalization(self):
@@ -148,6 +154,12 @@ class ToolTests(unittest.TestCase):
     def test_collection_coverage(self):
         self.make_collection()
         self.assertEqual(validate_collection(self.source), [])
+
+    def test_optional_root_document_links_are_checked(self):
+        self.make_collection()
+        (self.source / "AGENTS.md").write_text("# Instructions\n\n[Missing guide](docs/missing.md)\n")
+        errors = validate_collection(self.source)
+        self.assertTrue(any("AGENTS.md" in e and "missing local link" in e for e in errors))
 
     def test_missing_catalog_entry(self):
         self.make_collection()

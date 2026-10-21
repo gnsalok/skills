@@ -1,6 +1,6 @@
 ---
 name: architecture-review
-description: Review an existing backend architecture or RFC for boundary, ownership, security, operability, and evolution risks. Use for system-level assessment; use pr-review for defects in a specific code diff.
+description: Assess an existing application, package, service architecture, or RFC for boundary, ownership, security, and evolution risks. Use for structural assessment beyond a single diff.
 ---
 
 # Architecture review
@@ -11,14 +11,19 @@ a rewrite or edit an RFC unless asked.
 
 ## Build a trustworthy system map
 
-Read repository instructions, the RFC or ADRs, service entry points, schemas,
-interfaces, deployment definitions, and relevant tests. Identify the system's
+Read repository instructions, the RFC or ADRs, module/component entry points,
+schemas, interfaces, delivery configuration, and relevant tests. Identify the system's
 purpose and current pain. Trace a representative successful operation and one
 failure path. Mark undocumented behavior and unavailable components as unknown.
 
 Record the boundaries, state owners, callers, synchronous dependencies, and
 deployment units. Distinguish the design described by documents from the behavior
 implemented in code. A diagram is a hypothesis until its edges have evidence.
+
+For UI and local software, include state ownership, component/package dependency
+direction, platform adapters, and public extension points. Review how much a caller
+must know to complete a real task. Thin forwarding layers and shared mutable
+state are candidates to investigate, not automatic findings based on line counts.
 
 ## Challenge the important seams
 

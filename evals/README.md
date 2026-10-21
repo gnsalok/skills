@@ -45,14 +45,46 @@ Track routing and behavior separately. An explicit-file prompt can test reasonin
 but does not verify native discovery. Do not treat tests proposed by the agent as
 tests executed, or mark a blocked case as a pass.
 
-Before changing a model/tool default, run at least review-tenant-scope,
-design-slow-exports, distributed-charge-unknown, and both negative controls.
-When changing one skill, run its case and the closest neighboring workflow.
-For project-specific tuning, add a redacted reproduction from real work and keep
-the portable synthetic case as a baseline.
+Before changing a model/tool default, select a representative set across surfaces:
+
+- Lifecycle: spec-cli-json, plan-cli-criteria, build-cli-json, test-zero-collected,
+  review-ui-stale-response, and ship-package-readiness.
+- Specialists: design-library-interface, distributed-charge-unknown, and one of
+  frontend-settings-dialog, security-file-path, or performance-noise for your work.
+- Scope and routing: ship-authorized-but-unverified and both negative controls.
+
+The build scenario uses the included [report CLI fixture](fixtures/report-cli/README.md).
+Copy it into a disposable project and record the collection revision and initial
+diff. Its JSON mode is deliberately unimplemented. Verify the baseline tests,
+then ask the agent to perform the case and evaluate its actual diff and commands.
+If a runnable fixture is unavailable, score execution as blocked rather than
+judging a plan as an implemented change.
+The excerpt-only cases can assess reasoning without access to a live application;
+they cannot establish runtime or native-discovery correctness.
+
+When changing one skill, run its case and the closest neighboring workflow. For
+project-specific tuning, add a redacted reproduction from real work and keep the
+portable synthetic case as a baseline. Use the optional session-handoff and
+workflow-retrospective cases when changing how you maintain long-running work.
+
+From the collection root, an example setup on a Unix shell is:
+
+```bash
+evaluation_project="$(mktemp -d)"
+cp -R evals/fixtures/report-cli/. "$evaluation_project/"
+python3 scripts/install.py --agent codex --project "$evaluation_project" --skill build
+cd "$evaluation_project"
+python3 -m unittest discover -s tests -v
+```
+
+Use `claude` or `kiro` for the corresponding host. Start a fresh agent session in
+that directory, add a personal README note as described in the fixture, and apply
+the scenario prompt. The four baseline tests validate the fixture's starting
+contract; their passing does not mean an agent implemented JSON output correctly.
+After the run, check both parseable JSON and preserved text/error behavior yourself.
 
 ## Current baseline
 
-No live Codex, Claude Code, or Kiro behavioral runs are recorded in this initial
+No live Codex, Claude Code, or Kiro behavioral runs are recorded in this
 collection. Installer and structural checks verify packaging only. Use this suite
 to establish your baseline on the actual tools and models you use day to day.

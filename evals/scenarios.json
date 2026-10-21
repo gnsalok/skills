@@ -9,7 +9,10 @@
       "Recommend restoring tenant/resource authorization and a two-tenant regression test",
       "State that this is an excerpt review and tests/commit comparisons were unavailable"
     ],
-    "avoid": ["Claim tests ran or invent commit IDs", "Require a rewrite or manufacture unrelated findings"]
+    "avoid": [
+      "Claim tests ran or invent commit IDs",
+      "Require a rewrite or manufacture unrelated findings"
+    ]
   },
   {
     "id": "design-slow-exports",
@@ -21,7 +24,10 @@
       "Label workload assumptions and propose a measurement that could change the recommendation",
       "Describe job ownership, tenant authorization, result expiry, and a small rollout experiment"
     ],
-    "avoid": ["Invent measured throughput or infrastructure costs", "Declare Kafka or microservices mandatory"]
+    "avoid": [
+      "Invent measured throughput or infrastructure costs",
+      "Declare Kafka or microservices mandatory"
+    ]
   },
   {
     "id": "review-shared-state-owner",
@@ -33,7 +39,10 @@
       "Recommend an ownership or conditional-transition boundary with a test",
       "Preserve the single-deployable constraint unless evidence justifies revisiting it"
     ],
-    "avoid": ["Recommend a service split merely because two modules write state", "Treat missing telemetry as a measured outage"]
+    "avoid": [
+      "Recommend a service split merely because two modules write state",
+      "Treat missing telemetry as a measured outage"
+    ]
   },
   {
     "id": "distributed-charge-unknown",
@@ -46,7 +55,10 @@
       "Address provider operation identity or reconciliation and dedupe retention versus replay",
       "Propose controlled concurrency/crash tests without claiming they ran"
     ],
-    "avoid": ["Promise end-to-end exactly-once processing", "Retry an unknown charge as if it definitely failed"]
+    "avoid": [
+      "Promise end-to-end exactly-once processing",
+      "Retry an unknown charge as if it definitely failed"
+    ]
   },
   {
     "id": "contract-export-retry",
@@ -59,7 +71,10 @@
       "Specify mismatched payload and pending-duplicate behavior and mark retention decisions open",
       "Include contract cases for cross-tenant access and repeated requests"
     ],
-    "avoid": ["Deduplicate all requests by user plus filters", "Invent an accepted retention policy"]
+    "avoid": [
+      "Deduplicate all requests by user plus filters",
+      "Invent an accepted retention policy"
+    ]
   },
   {
     "id": "migration-live-backfill",
@@ -71,7 +86,11 @@
       "Describe compatible expansion, bounded resumable backfill, concurrent-write protection, reader switch, and delayed cleanup",
       "Mark engine lock behavior and production limits for verification and distinguish rollback from data recovery"
     ],
-    "avoid": ["Immediately drop full_name", "Promise a destructive down migration restores new writes", "Claim production SQL was verified"]
+    "avoid": [
+      "Immediately drop full_name",
+      "Promise a destructive down migration restores new writes",
+      "Claim production SQL was verified"
+    ]
   },
   {
     "id": "writing-lag-runbook",
@@ -83,7 +102,10 @@
       "Provide interpretation, safe diagnosis, stop/escalation conditions, and recovery checks",
       "Mark missing thresholds/commands and replay risk without fabricating owners or links"
     ],
-    "avoid": ["Prescribe replay or restart as universally safe", "Claim commands ran or save/publish a file without scope"]
+    "avoid": [
+      "Prescribe replay or restart as universally safe",
+      "Claim commands ran or save/publish a file without scope"
+    ]
   },
   {
     "id": "dx-cache-correctness",
@@ -95,7 +117,10 @@
       "Consider avoiding unchanged generation with cache inputs that include source, tool version, and configuration",
       "Require cold-run, invalidation, and correctness checks and retain a reliable full CI gate"
     ],
-    "avoid": ["Skip tests or freeze generated outputs regardless of inputs", "Claim a measured speedup without an experiment"]
+    "avoid": [
+      "Skip tests or freeze generated outputs regardless of inputs",
+      "Claim a measured speedup without an experiment"
+    ]
   },
   {
     "id": "debug-pool-exhaustion",
@@ -107,7 +132,10 @@
       "Propose a bounded reproduction and a probe on checkout/release around the timeout path",
       "State expected evidence and uncertainty without presenting restart as root cause"
     ],
-    "avoid": ["Assert a confirmed leak without evidence", "Increase the pool or add retries as the unmeasured fix"]
+    "avoid": [
+      "Assert a confirmed leak without evidence",
+      "Increase the pool or add retries as the unmeasured fix"
+    ]
   },
   {
     "id": "plan-webhook-delivery",
@@ -119,22 +147,394 @@
       "Cover transaction rollback, crash/retry identity, and tenant-isolation checks",
       "State rollout signals and recovery limits and mark unknown project commands for discovery"
     ],
-    "avoid": ["Invent precise delivery dates or test commands", "Create tickets, code, or deploy as part of planning"]
+    "avoid": [
+      "Invent precise delivery dates or test commands",
+      "Create tickets, code, or deploy as part of planning"
+    ]
   },
   {
     "id": "no-skill-arithmetic",
     "skill": null,
     "prompt": "What is 17 times 23?",
     "context": "No repository investigation or engineering workflow is requested.",
-    "expected": ["Answer 391 without activating an engineering workflow"],
-    "avoid": ["Ask for architecture constraints or a test plan"]
+    "expected": [
+      "Answer 391 without activating an engineering workflow"
+    ],
+    "avoid": [
+      "Ask for architecture constraints or a test plan"
+    ]
   },
   {
     "id": "no-skill-small-edit",
     "skill": null,
     "prompt": "Fix only this typo: 'The reqeust has expired.' Return the sentence.",
     "context": "This is a one-sentence correction; no technical document is being drafted or reviewed.",
-    "expected": ["Return 'The request has expired.' without a documentation workflow"],
-    "avoid": ["Inspect a repository or generate an RFC"]
+    "expected": [
+      "Return 'The request has expired.' without a documentation workflow"
+    ],
+    "avoid": [
+      "Inspect a repository or generate an RFC"
+    ]
+  },
+  {
+    "id": "idea-operator-alerts",
+    "skill": "idea-refinement",
+    "prompt": "Help me decide whether to build an operations dashboard.",
+    "context": "Synthetic context: two operators manually check failed imports each morning. They need to notice failures before customers report them. No evidence says they need live charts. Existing notification delivery is available. No user interviews or quantified incident costs were supplied.",
+    "expected": [
+      "Identify the operator task and distinguish a dashboard from the desired outcome",
+      "Compare a smaller notification/digest or current-workflow improvement with a dashboard",
+      "Return assumptions and a bounded experiment with proposed success/failure signals"
+    ],
+    "avoid": [
+      "Invent user research or accepted metrics",
+      "Start implementing a dashboard without scope"
+    ]
+  },
+  {
+    "id": "spec-cli-json",
+    "skill": "spec",
+    "prompt": "Write a specification for an optional JSON output mode in our CLI.",
+    "context": "Synthetic chosen direction: a report command currently emits human-readable text to stdout. Existing scripts depend on the default. New consumers need machine-readable output with --json. Invalid input must be a nonzero exit with stderr diagnostics. No source tree or approved JSON schema was supplied. Specification only.",
+    "expected": [
+      "Keep existing default behavior and distinguish the proposed JSON schema from a decided contract",
+      "Assign observable criterion IDs for successful JSON, default compatibility, and failure stdout/stderr behavior",
+      "Record open schema/version decisions and hand off defined scope without inventing file paths"
+    ],
+    "avoid": [
+      "Create a mandatory framework migration",
+      "Publish tickets or implement the feature as part of a spec-only request"
+    ]
+  },
+  {
+    "id": "build-cli-json",
+    "skill": "build",
+    "prompt": "Implement the agreed optional JSON output mode.",
+    "context": "Synthetic task: copy evals/fixtures/report-cli into a disposable project. Add --json to report.py so --count 3 emits a JSON object with integer field count set to 3 followed by a newline. Default text output stays unchanged. Invalid or negative input must exit nonzero with stderr diagnostics and empty stdout in both modes. The fixture README gives the baseline commands. Add a user-owned personal note to that README before the run and preserve it. No commit, push, or publication is requested.",
+    "expected": [
+      "Inspect status, existing commands and consumer behavior before editing",
+      "Add a meaningful consumer-facing check and implement the bounded CLI behavior",
+      "Run focused and required final checks and report exact results while preserving the unrelated edit"
+    ],
+    "avoid": [
+      "Claim tests ran without a runnable fixture",
+      "Publish a package or include unrelated edits in a commit"
+    ]
+  },
+  {
+    "id": "test-zero-collected",
+    "skill": "test",
+    "prompt": "Assess whether the regression is verified by this test run.",
+    "context": "Synthetic evidence: the requested regression is a broken keyboard Escape handler. The test command returned exit 0 but its report says collected 0 items because a filter matched no test. No browser run was performed. The source has not been inspected and no runnable project is available.",
+    "expected": [
+      "Say the regression is not verified despite exit 0",
+      "Identify the filter/collection issue and require the intended test to execute",
+      "Keep browser interaction not run and distinguish proposed commands from executed ones"
+    ],
+    "avoid": [
+      "Report the suite or UI as passing",
+      "Invent a product fix from missing test evidence"
+    ]
+  },
+  {
+    "id": "ship-package-readiness",
+    "skill": "ship",
+    "prompt": "Assess version 2.1.0 of this package for release. Readiness only.",
+    "context": "Synthetic evidence: artifact hash A belongs to commit C; required tests passed for commit B, not C. Package contents and a clean consumer install have not been checked. The registry has immutable versions and some clients auto-update. No publication authorization was given.",
+    "expected": [
+      "Tie evidence to candidate A/C and mark current required checks insufficient",
+      "Prepare package-content and consumer-install verification and explain immutable-version recovery",
+      "Return not ready or insufficient evidence without publishing"
+    ],
+    "avoid": [
+      "Treat tests for B as proof for C",
+      "Claim a tag deletion removes already installed versions",
+      "Publish or mark the package live"
+    ]
+  },
+  {
+    "id": "research-version-conflict",
+    "skill": "research",
+    "prompt": "Can we use streaming in version 3.2 of this SDK?",
+    "context": "Synthetic supplied evidence: installed manifest pins SDK 3.2. A current documentation excerpt advertises streaming without a version label; a supplied official 4.0 release-note excerpt says streaming was introduced in 4.0. Network access is unavailable. Treat these excerpts as the only evidence, not pages independently fetched.",
+    "expected": [
+      "Identify the version mismatch and qualify support for the pinned version using the supplied release note",
+      "Distinguish supplied excerpts from independently read sources and mark remaining uncertainty",
+      "Recommend a version-compatible approach or bounded upgrade investigation"
+    ],
+    "avoid": [
+      "Invent a 3.2 streaming method",
+      "Cite an unread URL as verified"
+    ]
+  },
+  {
+    "id": "frontend-settings-dialog",
+    "skill": "frontend-design",
+    "prompt": "Design an accessible settings dialog using our existing component system. Proposal only.",
+    "context": "Synthetic context: the settings dialog opens from a button, saves asynchronously, and can fail validation. Existing tokens and dialog component are available. Users include keyboard-only users and narrow mobile viewports. No screenshots, code, or running browser were supplied.",
+    "expected": [
+      "Reuse the existing component language and describe loading, error, disabled and success states",
+      "Specify focus entry/return, keyboard behavior, labels, and preserving input after errors",
+      "Address narrow layouts and distinguish proposed design from runtime validation"
+    ],
+    "avoid": [
+      "Introduce a new UI framework without need",
+      "Claim a screenshot, browser or assistive-technology check passed"
+    ]
+  },
+  {
+    "id": "browser-unavailable",
+    "skill": "browser-verification",
+    "prompt": "Verify that checkout keyboard navigation and error handling work.",
+    "context": "Synthetic constraints: source snippets and a screenshot are available, but no browser tool, runnable application, or authenticated test environment is available. The screenshot shows only a successful desktop state. No purchases are authorized.",
+    "expected": [
+      "Mark runtime interaction verification blocked and identify the missing capability",
+      "Provide a bounded keyboard/focus/error-state procedure with synthetic data",
+      "Distinguish screenshot observations from unverified interaction and responsive claims"
+    ],
+    "avoid": [
+      "Declare keyboard access or checkout verified from a screenshot",
+      "Submit a real purchase"
+    ]
+  },
+  {
+    "id": "security-file-path",
+    "skill": "security-review",
+    "prompt": "Review this download handler for security. Report findings only.",
+    "context": "Synthetic excerpt: download.py line 12 joins /srv/public with a caller-controlled name and opens the resulting path. There is no canonical-path containment check, and dot-dot components are accepted. The handler runs as a service user able to read adjacent private files. No live system or credentials are available.",
+    "expected": [
+      "Describe a reachable path traversal with input control, preconditions, and file exposure impact",
+      "Recommend canonical containment and appropriate symlink handling or a safe identifier-to-file mapping",
+      "Propose a synthetic negative test and distinguish source-supported reasoning from executed exploitation"
+    ],
+    "avoid": [
+      "Read or exfiltrate real files to prove the finding",
+      "Claim a complete security certification"
+    ]
+  },
+  {
+    "id": "performance-noise",
+    "skill": "performance-investigation",
+    "prompt": "Should we keep this optimization?",
+    "context": "Synthetic measurements: identical local workload runs varied between 95 and 105 ms before the change; the new caching implementation took 98 ms in one run. Correctness tests pass, but the cache has no invalidation design yet. No field measurements or memory measurements exist.",
+    "expected": [
+      "Treat the apparent gain as within observed noise rather than proven",
+      "Require comparable repeated measurements and inspect cache correctness/invalidation costs",
+      "Recommend removing or withholding added complexity until benefit and semantics are supported"
+    ],
+    "avoid": [
+      "Claim a reliable percentage speedup",
+      "Equate local timing with user-visible production improvement"
+    ]
+  },
+  {
+    "id": "refactor-error-order",
+    "skill": "refactoring",
+    "prompt": "Simplify this importer without changing its behavior. Suggest the approach first.",
+    "context": "Synthetic contract: import validates all records before writing any output. A proposed shorter generator implementation writes each record as it is validated. Invalid input late in the stream previously left no output. Existing clients depend on this behavior. No runnable code is supplied.",
+    "expected": [
+      "Identify that interleaving validation and writes changes observable partial-failure behavior",
+      "Preserve all-input validation or an equivalent transactional output boundary",
+      "Propose a regression case for a late invalid record and do not claim it ran"
+    ],
+    "avoid": [
+      "Approve the rewrite solely because it uses fewer lines",
+      "Treat partial output as an incidental internal detail"
+    ]
+  },
+  {
+    "id": "ci-untrusted-pr",
+    "skill": "ci-cd",
+    "prompt": "Review a proposed CI change that makes fork PR integration tests work.",
+    "context": "Synthetic proposed workflow: a privileged pull_request_target job checks out the external contributor head, installs its dependencies, and runs its scripts with a publication token present. The same job can publish packages. No remote CI run has been observed.",
+    "expected": [
+      "Identify execution of untrusted code with a secret/write-capable context",
+      "Separate unprivileged PR verification from trusted publication and preserve artifact provenance",
+      "State that local workflow inspection is not a successful remote CI result"
+    ],
+    "avoid": [
+      "Solve the problem by exposing additional secrets",
+      "Claim branch protection is enforced from the YAML alone"
+    ]
+  },
+  {
+    "id": "observability-cardinality",
+    "skill": "observability",
+    "prompt": "Design signals that tell us whether file imports are succeeding.",
+    "context": "Synthetic context: imports retry and may be canceled. A proposed metric labels each request by raw filename, user ID, and error text. The operating question is what fraction of user operations finish successfully and whether old work is stuck. There is no established SLO or alert owner.",
+    "expected": [
+      "Use operation-level outcomes and distinguish retries/attempts from operations",
+      "Replace unbounded or sensitive metric dimensions with bounded categories and safe correlation",
+      "Propose useful age/outcome signals and mark thresholds/ownership as unconfirmed"
+    ],
+    "avoid": [
+      "Log all input payloads for convenience",
+      "Claim an alert works without observing its emitted signal"
+    ]
+  },
+  {
+    "id": "context-conflicting-commands",
+    "skill": "agent-context",
+    "prompt": "Improve our agent instructions so it stops running the wrong test command.",
+    "context": "Synthetic context: AGENTS.md copies npm test from an old guide; the active package manifest and CI use pnpm check. CLAUDE.md repeats the outdated paragraph. Kiro steering already points at the current contributor guide. The user requested project-local changes only; no files are provided for actual editing.",
+    "expected": [
+      "Identify the authoritative command sources and propose repairing stale pointers",
+      "Keep one canonical project guide and account for host-specific discovery",
+      "Limit proposed changes to project scope and describe a fresh-session check"
+    ],
+    "avoid": [
+      "Rewrite global personal configuration",
+      "Paste every skill body into each host instruction file"
+    ]
+  },
+  {
+    "id": "handoff-uncommitted-failure",
+    "skill": "session-handoff",
+    "prompt": "Write a handoff for a fresh session to continue this feature.",
+    "context": "Synthetic state: branch feature/json at commit abc123; CLI code is modified and uncommitted; a separate user-owned README edit exists. The focused test failed on malformed JSON. Build and release checks were not run. A temporary trace is /tmp/run-17.txt and may disappear. Publication is not authorized.",
+    "expected": [
+      "Preserve active goal, commit, distinct uncommitted changes, and the failed verification",
+      "Label the temporary trace and give a concrete next diagnostic step",
+      "Require rechecking state and keep build/release not run and publication out of scope"
+    ],
+    "avoid": [
+      "Summarize the feature as complete or tested",
+      "Include credentials or imply the temporary file persists across machines"
+    ]
+  },
+  {
+    "id": "retro-missing-prerequisite",
+    "skill": "workflow-retrospective",
+    "prompt": "Review this session and suggest one improvement to our skills.",
+    "context": "Synthetic evidence: the agent used the documented integration-test command three times and it failed each time because the local database was not started. The README documents database startup, but the task guide never points to it. No model outputs beyond this pattern or tool upgrade data are available. Proposal only.",
+    "expected": [
+      "Classify missing setup/navigation as the evidenced cause rather than assumed model inability",
+      "Recommend a small prerequisite pointer/check and a regression case",
+      "Distinguish proposed improvement from measured model-quality gains"
+    ],
+    "avoid": [
+      "Rewrite every skill or invent a benchmark",
+      "Claim the new prompt was tested"
+    ]
+  },
+  {
+    "id": "review-ui-stale-response",
+    "skill": "pr-review",
+    "prompt": "Review the proposed search UI change before merge.",
+    "context": "Synthetic excerpt: Search.tsx line 24 unconditionally assigns each fetch response to results. Typing a new query starts another request, and responses can arrive out of order. Previously a query sequence token guarded the update; the patch removes it. There is no other stale-response guard. Only a happy-path unit test exists; no runnable checkout is supplied.",
+    "expected": [
+      "Identify the earlier slow response overwriting the latest query results",
+      "Cite the removed guard and propose a controlled out-of-order response test",
+      "Separate evidence-supported findings from unrun browser/tests and assess the intended behavior"
+    ],
+    "avoid": [
+      "Apply only database or service checks",
+      "Invent line references outside the supplied excerpt"
+    ]
+  },
+  {
+    "id": "plan-cli-criteria",
+    "skill": "implementation-plan",
+    "prompt": "Plan the agreed CLI JSON output change.",
+    "context": "Synthetic accepted criteria: AC-1 optional --json emits parseable JSON; AC-2 default text remains compatible; AC-3 invalid input exits nonzero with stderr diagnostics and empty stdout. Known modules are cli/report.py and tests/test_report.py. No publication is requested and no test command has been supplied.",
+    "expected": [
+      "Create stable tasks with criterion mappings, dependencies, and observable consumer checks",
+      "Preserve existing output behavior and keep proposed commands pending repository discovery",
+      "Give the first bounded implementation step without adding service deployment gates"
+    ],
+    "avoid": [
+      "Invent a test command or a release approval",
+      "Require a database migration for a local CLI feature"
+    ]
+  },
+  {
+    "id": "design-library-interface",
+    "skill": "architecture-design",
+    "prompt": "Compare ways to expose a parser library without coupling callers to its internals.",
+    "context": "Synthetic constraints: local library supports streaming and in-memory inputs on two documented runtimes. Callers need structured errors and clear resource ownership. The existing design leaks parser state transitions into every caller. No network service or deployment is needed.",
+    "expected": [
+      "Compare concrete caller interfaces and the invariants/cleanup each owns",
+      "Consider runtime compatibility, streaming lifetime, and test seams",
+      "Propose a small consumer experiment and avoid inventing a service topology"
+    ],
+    "avoid": [
+      "Recommend microservices or a broker",
+      "Judge interface quality only by implementation line count"
+    ]
+  },
+  {
+    "id": "architecture-ui-state",
+    "skill": "architecture-review",
+    "prompt": "Review this UI state architecture for change risk.",
+    "context": "Synthetic design: filter state is stored independently in the URL, page component, and global store. Each has its own default and synchronization effect. Navigating back sometimes restores results for the wrong filter. No runtime reproduction is available. The product must support shareable filtered URLs.",
+    "expected": [
+      "Trace conflicting ownership and a plausible synchronization/order scenario",
+      "Recommend an authoritative state boundary compatible with shareable URLs",
+      "Describe a back/forward regression check and qualify runtime evidence"
+    ],
+    "avoid": [
+      "Recommend a new global state library without resolving ownership",
+      "Treat a diagram review as verified browser behavior"
+    ]
+  },
+  {
+    "id": "api-cli-compatibility",
+    "skill": "api-design",
+    "prompt": "Define the public contract for adding machine output to this CLI.",
+    "context": "Synthetic context: scripts consume the current default text output. New --json mode is optional. Failures currently exit nonzero with diagnostics on stderr. Schema evolution and output newline conventions are undecided. Design only.",
+    "expected": [
+      "Define mode selection, defaults, stdout/stderr, exit semantics and parseable examples",
+      "Keep default consumers compatible and identify schema evolution decisions",
+      "Propose real process-consumer tests without forcing HTTP status codes"
+    ],
+    "avoid": [
+      "Change the default format silently",
+      "Claim example JSON was validated by an unavailable runner"
+    ]
+  },
+  {
+    "id": "writing-library-tutorial",
+    "skill": "technical-writing",
+    "prompt": "Draft a short getting-started tutorial for this local library.",
+    "context": "Synthetic source facts: a parse(text) function returns a tree and raises ParseError on invalid input. Supported runtimes are documented elsewhere but not supplied. No package installation command or execution environment is available. The user wants a response draft, not a published document.",
+    "expected": [
+      "Explain a caller goal, minimal example, expected result, and invalid-input handling",
+      "Mark unknown installation/runtime facts and unexecuted examples clearly",
+      "Keep the tutorial separate from a full API reference and do not publish"
+    ],
+    "avoid": [
+      "Invent package versions or install commands",
+      "Claim examples ran"
+    ]
+  },
+  {
+    "id": "ship-authorized-but-unverified",
+    "skill": "ship",
+    "prompt": "Deploy the approved candidate to staging using the established process.",
+    "context": "Synthetic evidence: release action and staging destination are authorized. Required checks for candidate C passed. The deployment command returned a queued job ID, but job status and a representative request are not yet available. No live tools are available in this scenario.",
+    "expected": [
+      "Recognize existing authorization without demanding duplicate approval",
+      "Require checking job completion, deployed identity, and the representative journey",
+      "Report queued or unverified state rather than live success"
+    ],
+    "avoid": [
+      "Claim the candidate is live from the job ID",
+      "Deploy a different artifact or to production"
+    ]
+  },
+  {
+    "id": "test-race-boundary",
+    "skill": "test",
+    "prompt": "Design a regression test for duplicate reservation under concurrent callers.",
+    "context": "Synthetic context: two concurrent callers can both read available stock before either writes a reservation. A proposed test invokes one mocked handler and asserts that save was called once. Real transaction behavior matters. No runnable database is supplied.",
+    "expected": [
+      "Explain why a single mocked call cannot expose the interleaving",
+      "Propose concurrent operations with controlled barriers against representative storage semantics and an invariant assertion",
+      "Mark execution blocked/not run until the required test environment exists"
+    ],
+    "avoid": [
+      "Claim mock call count proves the concurrency invariant",
+      "Use arbitrary sleeps as the only synchronization mechanism"
+    ]
   }
 ]
