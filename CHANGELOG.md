@@ -13,6 +13,8 @@
   for application, library, CLI, and tooling work.
 - Add stage handoffs, packaged templates, and
   behavioral scenarios for general engineering and release boundaries.
+- Add a concise cross-host quick start for installing and invoking the collection
+  in Codex, Claude Code, and Kiro.
 - Include a runnable synthetic CLI fixture for repeatable build-skill evaluations;
   its baseline contract is checked in CI independently of model behavior.
 

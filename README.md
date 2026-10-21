@@ -117,6 +117,9 @@ copied. The [setup guide](docs/agent-setup.md) covers manual installation, updat
 Kiro custom-agent resources, and explicit-file fallback when discovery is unavailable.
 Start a new session in your project and verify the selected skill is available.
 
+For a shorter walkthrough covering all three hosts, start with the
+[Codex, Claude Code, and Kiro quick start](docs/quick-start.md).
+
 Codex, Claude Code, and Kiro are agent tools, not fixed model versions. Choose your
 model in the host and evaluate the workflow on that combination. These skills do
 not install a model, browser, MCP server, or runtime dependency; some tasks need
