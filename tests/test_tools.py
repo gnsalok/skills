@@ -78,7 +78,7 @@ class ToolTests(unittest.TestCase):
         for agent, directory in AGENTS.items():
             with self.subTest(agent=agent):
                 targets = install(self.source, self.project, agent, ["demo"])
-                target = self.project / directory / "demo"
+                target = self.project.resolve() / directory / "demo"
                 self.assertEqual(targets, [target])
                 self.assertEqual((target / "SKILL.md").read_bytes(), self.path.read_bytes())
                 self.assertEqual((target / "reference.txt").read_text(), "resource")
