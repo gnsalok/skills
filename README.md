@@ -165,11 +165,3 @@ CI checks metadata, packaged resource links, catalog/scenario coverage, and inst
 behavior. These checks do not prove model quality or native skill activation.
 Behavioral scenarios are manual and record the actual host/model/version and
 results. A proposed experiment is never reported as an executed check.
-
-## Inspiration
-
-This collection draws on [Addy Osmani's agent-skills](https://github.com/addyosmani/agent-skills)
-and [Matt Pocock's skills](https://github.com/mattpocock/skills). The workflows are
-independently written for this collection. The [comparative review](docs/reference-review.md)
-records source revisions, what was learned, and what was deliberately changed;
-[design notes](docs/design.md) explain the collection's maintenance boundaries.

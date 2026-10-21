@@ -58,12 +58,3 @@ Use real friction to guide future additions. Test the smallest instruction chang
 then remove obsolete rules and duplicate guidance. A model upgrade is an occasion
 to rerun representative cases, not a reason to fork every skill by model name.
 See [CONTRIBUTING](../CONTRIBUTING.md) and [evaluation guidance](../evals/README.md).
-
-## Source study
-
-The initial backend collection drew on Addy Osmani and Matt Pocock's repositories.
-The broader review on 2026-10-21 is recorded in
-[reference-review.md](reference-review.md), including exact revisions, examined
-workflows, shortcomings in the merged main branch, and local design choices.
-Instructions and templates are independently written. Any future direct adaptation
-must preserve the original license and required attribution.

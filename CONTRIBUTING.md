@@ -90,6 +90,5 @@ large workflow. When skills overlap, state the boundary in their descriptions an
 in the workflow guide rather than adding circular instructions to call each other.
 
 After a host/model upgrade or repeated failure, use `workflow-retrospective` to
-classify the issue before editing prompts. Record source revision/date for new
-external inspiration in the comparative review; keep imported material's license
-when directly adapting it. Update the changelog for new skills or behavior changes.
+classify the issue before editing prompts. Update the changelog for new skills
+or behavior changes.

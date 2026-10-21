@@ -11,7 +11,7 @@
   context, session handoff, and workflow retrospective.
 - Broaden review, architecture, API design, planning, writing, and DX guidance
   for application, library, CLI, and tooling work.
-- Add stage handoffs, packaged templates, comparative reference notes, and
+- Add stage handoffs, packaged templates, and
   behavioral scenarios for general engineering and release boundaries.
 - Include a runnable synthetic CLI fixture for repeatable build-skill evaluations;
   its baseline contract is checked in CI independently of model behavior.
